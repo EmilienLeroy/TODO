@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private ListView list;
-    ArrayList<String> name_tab = new ArrayList<String>();
+    //ArrayList<String> name_tab = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     private TextView input_text;
     private FloatingActionButton button;
@@ -42,18 +42,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, name_tab);
+        adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, Singleton.getInstance().get_list());
         list.setAdapter(adapter);
     }
 
     private void delete_text(View v) {
-        name_tab.clear();
+        Singleton.getInstance().clear_list();
         adapter.notifyDataSetChanged();
     }
 
     private void Insert_Text(View v) {
         String text = input_text.getText().toString();
-        name_tab.add(text);
+        Singleton.getInstance().add_list(text);
         adapter.notifyDataSetChanged();
     }
 }
