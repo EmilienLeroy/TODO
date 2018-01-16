@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     private TextView input_text;
     private FloatingActionButton button;
+    private FloatingActionButton delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         list = (ListView) findViewById(R.id.listView);
         input_text = (TextView) findViewById(R.id.text);
         button = (FloatingActionButton ) findViewById(R.id.button);
+        delete = (FloatingActionButton ) findViewById(R.id.delete);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,9 +35,20 @@ public class MainActivity extends AppCompatActivity {
                 Insert_Text(v);
             }
         });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete_text(v);
+            }
+        });
 
         adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, name_tab);
         list.setAdapter(adapter);
+    }
+
+    private void delete_text(View v) {
+        name_tab.clear();
+        adapter.notifyDataSetChanged();
     }
 
     private void Insert_Text(View v) {
