@@ -1,9 +1,11 @@
 package fr.emilienleroy.todo;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,6 +13,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,11 +24,16 @@ public class MainActivity extends AppCompatActivity {
     //private TextView input_text;
     private FloatingActionButton button;
     private FloatingActionButton delete;
+    SharedPreferences save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        save = getSharedPreferences("PREFS", MODE_PRIVATE);
+        loaddata();
+
         list = (ListView) findViewById(R.id.listView);
         //input_text = (TextView) findViewById(R.id.text);
         button = (FloatingActionButton ) findViewById(R.id.button);
@@ -50,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private void delete_text(View v) {
         Singleton.getInstance().clear_list();
         adapter.notifyDataSetChanged();
+        savedata();
     }
 
     /**
@@ -73,10 +83,22 @@ public class MainActivity extends AppCompatActivity {
             {
                 String s = data.getStringExtra("etat");
                 Singleton.getInstance().add_list(s);
+                savedata();
             }
         }
     }
 
+    private void savedata() {
+        SharedPreferences.Editor editor = save.edit();
+        Set<String> set = new HashSet<String>();
+        set.addAll(Singleton.getInstance().get_list());
+        editor.putStringSet("DATE_LIST", set);
+        editor.commit();
+    }
 
+    private void loaddata() {
+        Set<String> set = save.getStringSet("DATE_LIST", null);
+        Singleton.getInstance().addAll(set);
+    }
 
 }

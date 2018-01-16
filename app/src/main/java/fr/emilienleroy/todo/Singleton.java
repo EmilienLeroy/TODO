@@ -4,6 +4,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by eleroy on 16/01/2018.
@@ -41,4 +42,7 @@ public class Singleton {
         this.name_tab.add(data);
     }
 
+    public void addAll(Set<String> set) {
+        this.name_tab.addAll(set);
+    }
 }
