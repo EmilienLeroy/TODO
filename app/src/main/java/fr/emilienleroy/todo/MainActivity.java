@@ -1,5 +1,6 @@
 package fr.emilienleroy.todo;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView list;
     //ArrayList<String> name_tab = new ArrayList<String>();
     ArrayAdapter<String> adapter;
-    private TextView input_text;
+    //private TextView input_text;
     private FloatingActionButton button;
     private FloatingActionButton delete;
 
@@ -25,14 +26,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         list = (ListView) findViewById(R.id.listView);
-        input_text = (TextView) findViewById(R.id.text);
+        //input_text = (TextView) findViewById(R.id.text);
         button = (FloatingActionButton ) findViewById(R.id.button);
         delete = (FloatingActionButton ) findViewById(R.id.delete);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Insert_Text(v);
+                Todo_Activity(v);
             }
         });
         delete.setOnClickListener(new View.OnClickListener() {
@@ -51,9 +52,31 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    /**
     private void Insert_Text(View v) {
         String text = input_text.getText().toString();
         Singleton.getInstance().add_list(text);
         adapter.notifyDataSetChanged();
     }
+    */
+
+    private void Todo_Activity(View v){
+        Intent myIntent = new Intent(getApplicationContext(),TodoActivity.class);
+        startActivityForResult(myIntent,1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1)
+        {
+            if (resultCode==RESULT_OK)
+            {
+                String s = data.getStringExtra("etat");
+                Singleton.getInstance().add_list(s);
+            }
+        }
+    }
+
+
+
 }
